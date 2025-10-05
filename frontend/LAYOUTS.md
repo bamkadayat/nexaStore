@@ -107,11 +107,11 @@
 
 ## 🎯 Color Scheme Applied
 
-All layouts use the custom color palette:
-- **Primary (Navy Blue)**: `#16325B` - Main actions, active states
-- **Secondary (Ocean Blue)**: `#227B94` - Secondary elements
-- **Accent (Sky Blue)**: `#78B7D0` - Hover states, highlights
-- **Cream**: `#FFDC7F` - Special accents (dark mode)
+All layouts use the custom coffee-themed color palette:
+- **Primary (Coffee Dark)**: `#181411` - Main actions, active states
+- **Secondary (Coffee Medium)**: `#A67B5B` - Secondary elements
+- **Accent (Coffee Light)**: `#ECB176` - Hover states, highlights
+- **Coffee Cream**: `#FED8B1` - Special accents (dark mode)
 - **Destructive**: `#662222` - Delete, logout, errors
 
 ---
