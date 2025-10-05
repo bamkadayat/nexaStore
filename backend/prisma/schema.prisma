@@ -29,9 +29,10 @@ model User {
   wishlist  Wishlist?
 
   // Timestamps
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  lastLoginAt DateTime?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  lastLoginAt  DateTime?
+  Subscription Subscription[]
 
   @@index([email])
   @@map("users")
@@ -81,6 +82,49 @@ model Product {
   isActive   Boolean @default(true)
   isFeatured Boolean @default(false)
 
+  // ============================================
+  // COFFEE-SPECIFIC FIELDS
+  // ============================================
+
+  // Coffee Origin & Type
+  coffeeOrigin     String? // "Ethiopia", "Colombia", etc.
+  region           String? // "Yirgacheffe", "Huila", etc.
+  roastLevel       RoastLevel?
+  roastDate        DateTime? // When this batch was roasted
+  processingMethod String? // "Washed", "Natural", "Honey", "Anaerobic"
+
+  // Coffee Characteristics
+  flavorNotes  String[] // ["chocolate", "berry", "caramel", "floral"]
+  tastingNotes String?  @db.Text // Detailed tasting description
+  altitude     String? // "1500-2000m"
+  varietals    String[] // ["Arabica", "Bourbon", "Typica"]
+  harvestYear  Int? // 2024
+
+  // Certifications & Ethics
+  certifications String[] // ["Organic", "Fair Trade", "Rainforest Alliance"]
+  farmName       String? // Name of the coffee farm
+  farmerStory    String?  @db.Text // Story behind the coffee
+
+  // Coffee Ratings (1-5 scale)
+  acidityLevel   Int? // 1=Low, 5=High
+  bodyLevel      Int? // 1=Light, 5=Full
+  sweetnessLevel Int? // 1=Low, 5=High
+
+  // Brewing Information
+  bestBrewMethods String[] // ["Pour-over", "French Press", "Espresso"]
+  grindSize       String? // "Fine", "Medium", "Coarse"
+  brewTemperature String? // "90-96°C"
+  brewRatio       String? // "1:15" or "1:16"
+
+  // Product Type
+  productType ProductType @default(COFFEE_BEANS)
+  weight      Int? // Weight in grams (250, 500, 1000)
+
+  // Equipment-specific (for brewing gear)
+  material      String? // "Stainless Steel", "Ceramic", "Glass"
+  capacity      String? // "1L", "500ml", "6 cups"
+  compatibility String[] // ["V60", "Chemex", "All methods"]
+
   // Relations
   cartItems     CartItem[]
   orderItems    OrderItem[]
@@ -95,7 +139,31 @@ model Product {
   @@index([slug])
   @@index([name])
   @@index([isActive, isFeatured])
+  @@index([roastLevel])
+  @@index([coffeeOrigin])
+  @@index([productType])
   @@map("products")
+}
+
+/**
+ * PRODUCT TYPE ENUM
+ */
+enum ProductType {
+  COFFEE_BEANS // Whole bean or ground coffee
+  BREWING_EQUIPMENT // Pour-over, french press, etc.
+  ACCESSORIES // Filters, scales, etc.
+  MERCHANDISE // Mugs, books, etc.
+}
+
+/**
+ * ROAST LEVEL ENUM
+ */
+enum RoastLevel {
+  LIGHT // Light roast (Nordic style)
+  MEDIUM_LIGHT // Medium-light
+  MEDIUM // Medium roast
+  MEDIUM_DARK // Medium-dark
+  DARK // Dark roast (French/Italian)
 }
 
 /**
@@ -126,6 +194,9 @@ model CartItem {
   productId String
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   quantity  Int     @default(1)
+
+  // Optional: Selected grind size (if coffee beans)
+  grindPreference String? // "Whole Bean", "Fine", "Medium", "Coarse"
 
   // Timestamps
   createdAt DateTime @default(now())
@@ -220,6 +291,10 @@ model OrderItem {
   productImage String?
   sku          String?
 
+  // Coffee-specific snapshot
+  roastLevel      String? // Snapshot of roast level
+  grindPreference String? // Customer's grind choice
+
   // Pricing
   quantity Int
   price    Decimal @db.Decimal(10, 2) // Price at time of order
@@ -285,6 +360,12 @@ model Review {
   title   String?
   comment String  @db.Text
 
+  // Coffee-specific review fields
+  tasteRating Int? // 1-5 stars (how good it tastes)
+  aromaRating Int? // 1-5 stars (aroma quality)
+  valueRating Int? // 1-5 stars (value for money)
+  brewMethod  String? // How they brewed it
+
   // Status
   isVerifiedPurchase Boolean @default(false)
   isApproved         Boolean @default(false) // Admin approval
@@ -330,6 +411,9 @@ model WishlistItem {
   productId  String
   product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
 
+  // Optional: Notify when back in stock
+  notifyWhenAvailable Boolean @default(false)
+
   // Timestamps
   createdAt DateTime @default(now())
 
@@ -367,4 +451,58 @@ model Category {
   @@index([slug])
   @@index([parentId])
   @@map("categories")
+}
+
+/**
+ * SUBSCRIPTIONS (Optional - for future coffee subscriptions)
+ */
+model Subscription {
+  id     String @id @default(uuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Subscription details
+  planName  String // "Weekly Fresh Roast", "Monthly Essentials"
+  frequency SubscriptionFreq   @default(MONTHLY)
+  status    SubscriptionStatus @default(ACTIVE)
+
+  // Preferences
+  roastPreference RoastLevel?
+  grindPreference String? // "Whole Bean", "Medium", etc.
+  quantity        Int         @default(250) // Grams per delivery
+
+  // Pricing
+  price Decimal @db.Decimal(10, 2)
+
+  // Stripe
+  stripeSubscriptionId String? @unique
+  stripeCustomerId     String?
+
+  // Delivery
+  nextDeliveryDate DateTime?
+  lastDeliveryDate DateTime?
+
+  // Timestamps
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  startedAt   DateTime  @default(now())
+  pausedAt    DateTime?
+  cancelledAt DateTime?
+
+  @@index([userId])
+  @@index([status])
+  @@map("subscriptions")
+}
+
+enum SubscriptionFreq {
+  WEEKLY
+  BIWEEKLY
+  MONTHLY
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  PAUSED
+  CANCELLED
+  EXPIRED
 }
