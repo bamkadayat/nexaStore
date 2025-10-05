@@ -69,10 +69,7 @@ cd frontend && pnpm dev
 nexastore/
 ├── frontend/
 │   ├── app/
-│   ├── components/
-│   ├── lib/
-│   └── store/
-│
+│   
 ├── backend/
 │   ├── src/
 │   │   ├── controllers/
