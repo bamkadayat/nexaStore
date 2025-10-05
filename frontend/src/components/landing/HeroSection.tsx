@@ -7,7 +7,7 @@ export default function HeroSection() {
         <div className="space-y-6">
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
             Brew Your Perfect
-            <span className="block text-coffee-cream mt-2">Moment</span>
+            <span className="text-coffee-cream mt-2">{" "}Moment</span>
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground">
             From farm to cup, experience the finest artisan coffee beans,
@@ -15,14 +15,14 @@ export default function HeroSection() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <Link
-              href="/products"
+              href="/kaffebutikk"
               className="px-8 py-4 bg-primary text-primary-foreground rounded-md font-semibold hover:bg-primary/90 transition-colors text-center"
             >
               Explore Collection
             </Link>
             <Link
               href="/about"
-              className="px-8 py-4 border-2 border-input text-foreground rounded-md font-semibold hover:bg-accent transition-colors text-center"
+              className="px-8 py-4 border-2 border-input text-foreground rounded-md font-semibold hover:bg-accent hover:text-coffee-dark transition-colors text-center"
             >
               Our Story
             </Link>

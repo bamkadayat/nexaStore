@@ -97,7 +97,7 @@ export function PublicHeader({ cartCount = 0 }: PublicHeaderProps) {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`px-3 py-2 text-sm font-medium rounded-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60
+                className={`px-3 py-2 text-base font-medium rounded-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60
                   hover:text-primary ${
                     active ? "text-primary" : "text-muted-foreground"
                   }`}

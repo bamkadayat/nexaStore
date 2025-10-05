@@ -1,7 +1,5 @@
 export const publicNavigation = [
-  { name: 'Home', href: '/' },
-  { name: 'Products', href: '/products' },
-  { name: 'Categories', href: '/categories' },
+  { name: 'kaffebutikk', href: '/kaffebutikk' },
   { name: 'About', href: '/about' },
   { name: 'Contact', href: '/contact' },
 ]
@@ -18,7 +16,6 @@ export const customerNavigation = [
 export const adminNavigation = [
   { name: 'Dashboard', href: '/admin' },
   { name: 'Products', href: '/admin/products' },
-  { name: 'Categories', href: '/admin/categories' },
   { name: 'Orders', href: '/admin/orders' },
   { name: 'Customers', href: '/admin/customers' },
   { name: 'Reviews', href: '/admin/reviews' },
