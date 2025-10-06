@@ -15,7 +15,7 @@ steps:
       - deploy
       - nexastore-app
       - --image=gcr.io/$PROJECT_ID/nexastore-app:$COMMIT_SHA
-      - --region=europe-north1
+      - --region=europe-north1*
       - --platform=managed
       - --port=8080
       - --vpc-connector=svpc-eun1
