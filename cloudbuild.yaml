@@ -21,7 +21,7 @@ steps:
       - --vpc-connector=svpc-eun1
       - --vpc-egress=private-ranges-only
       - --set-secrets=DATABASE_URL=DATABASE_URL:latest
-      - --set-env-vars=PORT=8080,NODE_ENV=production
+      - --set-env-vars=NODE_ENV=production
       - --allow-unauthenticated
       - --min-instances=0
       - --max-instances=10
