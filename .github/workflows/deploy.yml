@@ -54,7 +54,7 @@ jobs:
             --port=8080 \
             --vpc-connector=${{ env.VPC_CONNECTOR }} \
             --vpc-egress=private-ranges-only \
-            --set-env-vars=DATABASE_URL=${{ secrets.DATABASE_URL }},NODE_ENV=production,MAILGUN_API_BASE=${{ secrets.MAILGUN_API_BASE }},MAILGUN_DOMAIN=${{ secrets.MAILGUN_DOMAIN }},MAILGUN_API_KEY=${{ secrets.MAILGUN_API_KEY }},MAILGUN_FROM=${{ secrets.MAILGUN_FROM }},MAILGUN_REPLY_TO=${{ secrets.MAILGUN_REPLY_TO }} \
+            --set-env-vars="DATABASE_URL=${{ secrets.DATABASE_URL }},NODE_ENV=production,MAILGUN_API_BASE=${{ secrets.MAILGUN_API_BASE }},MAILGUN_DOMAIN=${{ secrets.MAILGUN_DOMAIN }},MAILGUN_API_KEY=${{ secrets.MAILGUN_API_KEY }},MAILGUN_FROM=${{ secrets.MAILGUN_FROM }},MAILGUN_REPLY_TO=${{ secrets.MAILGUN_REPLY_TO }}" \
             --allow-unauthenticated \
             --min-instances=0 \
             --max-instances=10 \
