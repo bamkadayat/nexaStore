@@ -9,13 +9,9 @@ export const apiClient = axios.create({
   withCredentials: true,
 })
 
-// Request interceptor for adding auth token
+// Request interceptor for handling requests
 apiClient.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('auth-token')
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`
-    }
     return config
   },
   (error) => {
@@ -29,7 +25,6 @@ apiClient.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       // Handle unauthorized - redirect to login
-      localStorage.removeItem('auth-token')
       window.location.href = '/login'
     }
     return Promise.reject(error)
