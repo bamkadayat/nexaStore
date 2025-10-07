@@ -1,14 +1,16 @@
+import FeaturedProducts from "@/components/landing/FeaturedProducts";
+import Features from "@/components/landing/Features";
 import HeroSection from "@/components/landing/HeroSection";
-import PopularCategories from "@/components/landing/PopularCategories";
 
 export default function HomePage() {
   return (
-    <div>
+    <>
       {/* Hero Section */}
       <HeroSection />
-
-      {/* Popular Categories */}
-      <PopularCategories />
-    </div>
+      {/* Features Section */}
+      <Features />
+      {/* Featured Products Section */}
+      <FeaturedProducts />
+    </>
   )
 }

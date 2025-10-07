@@ -5,9 +5,9 @@ export default function HeroSection() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
         {/* Left Column - Content */}
         <div className="space-y-6">
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
+          <h1 className="text-5xl md:text-7xl font-bold tracking-tight">
             Brew Your Perfect
-            <span className="text-coffee-cream mt-2">{" "}Moment</span>
+            <span className="text-coffee-cream mt-2 block md:text-8xl text-6xl">{" "}Moment</span>
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground">
             From farm to cup, experience the finest artisan coffee beans,
@@ -16,7 +16,7 @@ export default function HeroSection() {
           <div className="flex flex-col sm:flex-row gap-4">
             <Link
               href="/kaffebutikk"
-              className="px-8 py-4 bg-primary text-primary-foreground rounded-md font-semibold hover:bg-primary/90 transition-colors text-center"
+              className="px-8 py-4 bg-coffee-cream text-primary-foreground rounded-md font-semibold hover:bg-primary/90 transition-colors text-center"
             >
               Explore Collection
             </Link>
@@ -30,7 +30,7 @@ export default function HeroSection() {
         </div>
 
         {/* Right Column - Image */}
-        <div className="w-full max-w-xs mx-auto">
+        <div className="w-full max-w-[250px] md:max-w-xs mx-auto">
           <img
             src="/images/landing/hero-img.png"
             alt="Coffee beans and brewing"

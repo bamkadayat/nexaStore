@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 import { publicNavigation } from "@/config/navigation";
 import { ShoppingCart, User, Search, X } from "lucide-react";
 
@@ -84,8 +85,8 @@ export function PublicHeader({ cartCount = 0 }: PublicHeaderProps) {
           aria-label="Go to homepage"
         >
           <span className="text-2xl font-bold tracking-wider">
-            <span className="text-light">NEXA</span>
-            <span className="text-coffee-cream font-medium">STORE</span>
+            <span className="text-light font-extrabold">NEXA</span>
+            <span className="text-coffee-cream font-extrabold">STORE</span>
           </span>
         </Link>
 
@@ -97,9 +98,9 @@ export function PublicHeader({ cartCount = 0 }: PublicHeaderProps) {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`px-3 py-2 text-base font-medium rounded-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60
+                className={`px-3 py-2 text-base font-semibold rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60
                   hover:text-primary ${
-                    active ? "text-primary" : "text-muted-foreground"
+                    active ? "text-primary" : "text-white"
                   }`}
                 aria-current={active ? "page" : undefined}
               >
@@ -167,31 +168,35 @@ export function PublicHeader({ cartCount = 0 }: PublicHeaderProps) {
       </div>
 
       {/* Mobile Overlay + Panel (dialog-like) */}
-      <div
-        className={`md:hidden fixed inset-0 z-50 transition-all duration-500 ease-in-out ${
-          mobileMenuOpen
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
-        }`}
-        role="dialog"
-        aria-modal="true"
-        aria-hidden={!mobileMenuOpen}
-        onKeyDown={onKeyDown}
-      >
-        {/* Backdrop */}
-        <button
-          className="absolute inset-0 bg-black/50"
-          aria-label="Close menu"
-          onClick={() => setMobileMenuOpen(false)}
-          tabIndex={mobileMenuOpen ? 0 : -1}
-        />
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <div
+            className="md:hidden fixed inset-0 z-50"
+            role="dialog"
+            aria-modal="true"
+            onKeyDown={onKeyDown}
+          >
+            {/* Backdrop */}
+            <motion.button
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="absolute inset-0 bg-black/50"
+              aria-label="Close menu"
+              onClick={() => setMobileMenuOpen(false)}
+            />
 
-        {/* Panel */}
-        <div
-          id="mobile-menu-panel"
-          ref={panelRef}
-          className="absolute left-0 right-0 top-0 pt-[env(safe-area-inset-top)] bg-[#1f1513] border-b shadow-lg focus:outline-none min-h-screen h-[100dvh] max-h-[100svh] overflow-y-auto"
-        >
+            {/* Panel */}
+            <motion.div
+              id="mobile-menu-panel"
+              ref={panelRef}
+              initial={{ y: "-100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "-100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="absolute left-0 right-0 top-0 pt-[env(safe-area-inset-top)] bg-[#1f1513] border-b shadow-lg focus:outline-none min-h-screen h-[100dvh] max-h-[100svh] overflow-y-auto"
+            >
             <div className="container mx-auto px-4 flex items-center justify-between h-14">
               <span className="sr-only">Mobile Navigation</span>
               <Link
@@ -199,10 +204,10 @@ export function PublicHeader({ cartCount = 0 }: PublicHeaderProps) {
                 className="flex items-center h-10 md:h-12 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 rounded-lg"
                 aria-label="Go to homepage"
               >
-                <span className="text-2xl font-bold tracking-wider">
-                  <span className="text-light">NEXA</span>
-                  <span className="text-coffee-cream font-medium">STORE</span>
-                </span>
+               <span className="text-2xl font-bold tracking-wider">
+            <span className="text-light font-extrabold">NEXA</span>
+            <span className="text-coffee-cream font-extrabold">STORE</span>
+          </span>
               </Link>
               <button
                 className="inline-flex h-10 w-10 items-center justify-center rounded-lg hover:bg-accent transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
@@ -217,61 +222,92 @@ export function PublicHeader({ cartCount = 0 }: PublicHeaderProps) {
             </div>
 
             <nav className="container mx-auto px-4 pb-4 pt-2 space-y-1" aria-label="Primary">
-              {publicNavigation.map((item) => {
+              {publicNavigation.map((item, index) => {
                 const active = pathname === item.href;
                 return (
-                  <Link
+                  <motion.div
                     key={item.href}
-                    href={item.href}
-                    className={`block rounded-lg px-3 py-3 text-base font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60
-                      hover:bg-accent ${
-                        active ? "text-primary" : "text-foreground"
-                      }`}
-                    onClick={() => setMobileMenuOpen(false)}
-                    aria-current={active ? "page" : undefined}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1, duration: 0.3 }}
                   >
-                    {item.name}
-                  </Link>
+                    <Link
+                      href={item.href}
+                      className={`block rounded-lg px-3 py-3 text-base font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60
+                        hover:bg-accent ${
+                          active ? "text-primary" : "text-white"
+                        }`}
+                      onClick={() => setMobileMenuOpen(false)}
+                      aria-current={active ? "page" : undefined}
+                    >
+                      {item.name}
+                    </Link>
+                  </motion.div>
                 );
               })}
 
-              <div className="h-px bg-border my-2" />
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4, duration: 0.3 }}
+                className="h-px bg-border my-2"
+              />
 
-              <div className="flex gap-2">
-                <Link
-                  href="/cart"
-                  className="inline-flex flex-1 items-center justify-center rounded-lg border px-4 py-3 text-base font-medium hover:bg-accent transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 relative"
-                  onClick={() => setMobileMenuOpen(false)}
+              <div className="space-y-2">
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.4, duration: 0.4, ease: "easeOut" }}
                 >
-                  <ShoppingCart className="mr-2 h-5 w-5" aria-hidden="true" />
-                  Cart
-                  {cartCount > 0 && (
-                    <span className="ml-2 min-w-[1.25rem] h-5 rounded-full bg-primary px-1.5 text-[11px] leading-5 text-primary-foreground">
-                      {cartCount}
-                    </span>
-                  )}
-                </Link>
-                <Link
-                  href="/login"
-                  className="sm:hidden inline-flex flex-1 items-center justify-center rounded-lg border px-4 py-3 text-base font-medium hover:bg-accent transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
-                  onClick={() => setMobileMenuOpen(false)}
+                  <Link
+                    href="/cart"
+                    className="flex w-full items-center justify-center rounded-lg border px-4 py-3 text-base font-medium hover:bg-accent transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 relative"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <ShoppingCart className="mr-2 h-5 w-5" aria-hidden="true" />
+                    Cart
+                    {cartCount > 0 && (
+                      <span className="ml-2 min-w-[1.25rem] h-5 rounded-full bg-primary px-1.5 text-[11px] leading-5 text-primary-foreground">
+                        {cartCount}
+                      </span>
+                    )}
+                  </Link>
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.5, duration: 0.4, ease: "easeOut" }}
                 >
-                  <User className="mr-2 h-5 w-5" aria-hidden="true" />
-                  Login
-                </Link>
-                <button
-                  className="inline-flex flex-1 items-center justify-center rounded-lg border px-4 py-3 text-base font-medium hover:bg-accent transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
-                  onClick={() => setMobileMenuOpen(false)}
+                  <Link
+                    href="/login"
+                    className="flex w-full items-center justify-center rounded-lg border px-4 py-3 text-base font-medium hover:bg-accent transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <User className="mr-2 h-5 w-5" aria-hidden="true" />
+                    Login
+                  </Link>
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.6, duration: 0.4, ease: "easeOut" }}
                 >
-                  <Search className="mr-2 h-5 w-5" aria-hidden="true" />
-                  Search
-                </button>
+                  <button
+                    className="flex w-full items-center justify-center rounded-lg border px-4 py-3 text-base font-medium hover:bg-accent transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <Search className="mr-2 h-5 w-5" aria-hidden="true" />
+                    Search
+                  </button>
+                </motion.div>
               </div>
 
               <div className="pb-[env(safe-area-inset-bottom)]" />
             </nav>
+            </motion.div>
           </div>
-      </div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
