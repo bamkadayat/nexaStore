@@ -17,21 +17,21 @@ const products = [
     description:
       "Bright floral notes with hints of bergamot and citrus. Light roast.",
     price: 24.99,
-    image: "/images/products/img-one.jpg",
+    image: "https://res.cloudinary.com/bam-front/image/upload/v1759830135/jqvetq1wgwso0nr4oepn.jpg",
   },
   {
     id: 2,
     name: "Colombian Supremo",
     description: "Rich and balanced with caramel sweetness. Medium roast.",
     price: 22.99,
-    image: "/images/products/img-two.jpg",
+    image: "https://res.cloudinary.com/bam-front/image/upload/v1759830135/s5otscs7fcuvyc7mgvry.jpg",
   },
   {
     id: 3,
     name: "Sumatra Mandheling",
     description: "Full-bodied with earthy notes and low acidity. Dark roast.",
     price: 26.99,
-    image: "/images/products/img-three.jpg",
+    image: "https://res.cloudinary.com/bam-front/image/upload/v1759830135/v3loyz6wr1zvi3n1eau9.jpg",
   },
 ];
 
