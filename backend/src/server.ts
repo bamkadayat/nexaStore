@@ -7,7 +7,8 @@ import routes from './routes';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 8000;
+const PORT = parseInt(process.env.PORT || '8000', 10);
+const HOST = '0.0.0.0';
 
 // Middlewares
 const allowedOrigins = [
@@ -42,6 +43,6 @@ app.get('/health', (_req, res) => {
 app.use('/api', routes);
 
 // Start server
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+app.listen(PORT, HOST, () => {
+  console.log(`Server is running on ${HOST}:${PORT}`);
 });
