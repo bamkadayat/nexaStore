@@ -3,9 +3,27 @@
 # Colors for output
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
+YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 echo -e "${BLUE}Starting NexaStore...${NC}"
+
+# Setup database tunnel
+echo -e "${YELLOW}Checking database connection...${NC}"
+if lsof -Pi :5433 -sTCP:LISTEN -t >/dev/null 2>&1 ; then
+    echo -e "${GREEN}✓ Database tunnel is already running${NC}"
+else
+    echo -e "${YELLOW}🔌 Starting database tunnel...${NC}"
+    gcloud compute ssh nexastore --zone=europe-north1-a -- -L 5433:10.166.0.2:5432 -N -f
+
+    sleep 2
+    if lsof -Pi :5433 -sTCP:LISTEN -t >/dev/null 2>&1 ; then
+        echo -e "${GREEN}✓ Database tunnel connected${NC}"
+    else
+        echo -e "\033[0;31m✗ Failed to start database tunnel${NC}"
+        exit 1
+    fi
+fi
 
 # Check if pnpm is installed
 if ! command -v pnpm &> /dev/null; then

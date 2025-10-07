@@ -47,6 +47,31 @@ enum Role {
 }
 
 /**
+ * VERIFICATION CODE (for email verification with 4-digit PIN)
+ */
+model VerificationCode {
+  id        String   @id @default(uuid())
+  email     String
+  code      String // 4-digit PIN
+  purpose   VerificationPurpose // LOGIN, SIGNUP, RESET_PASSWORD
+  expiresAt DateTime
+  verified  Boolean  @default(false)
+
+  // Timestamps
+  createdAt DateTime @default(now())
+
+  @@index([email, code])
+  @@index([expiresAt])
+  @@map("verification_codes")
+}
+
+enum VerificationPurpose {
+  LOGIN
+  SIGNUP
+  RESET_PASSWORD
+}
+
+/**
  * PRODUCTS
  */
 model Product {
